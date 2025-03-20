@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Registration Form</title>
+    <link rel="icon" href="data:," type="image/x-icon">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <style>
+        /* General Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #f3f4f6;
+        }
+
+        .wrapper {
+            position: relative;
+            width: 400px;
+            height: auto;
+            background-color: transparent;
+            border: 2px solid rgba(255, 255, 255, .5);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, .2);
+            margin: auto;
+            padding: 40px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .wrapper h2 {
+            font-size: 2em;
+            color: #000;
+            text-align: center;
+        }
+
+        .toggle-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 10px 0;
+            font-size: 1em;
+            background: #e0e0e0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin: 0 5px;
+            color: #000;
+        }
+
+        .toggle-btn.active {
+            background: #000;
+            color: #fff;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .form-container form {
+            display: none;
+            width: 100%;
+        }
+
+        .form-container form.active {
+            display: block;
+        }
+
+        .input-box {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            border-bottom: 2px solid #000;
+            margin: 30px 0;
+        }
+
+        .input-box label {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            transform: translateY(-50%);
+            color: #000;
+            font-weight: 500;
+            pointer-events: none;
+            transition: .5s;
+        }
+
+        .input-box input:focus~label,
+        .input-box input:valid~label {
+            top: -5px;
+        }
+
+        .input-box input {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1em;
+            color: #000;
+            font-weight: 600;
+            padding: 0 35px 0 5px;
+        }
+
+        .input-box .icon {
+            position: absolute;
+            right: 8px;
+            font-size: 1.2rem;
+            color: #000;
+            line-height: 57px;
+        }
+
+        .btn {
+            width: 100%;
+            height: 45px;
+            background: #000;
+            border: none;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            color: #fff;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .form-footer {
+            text-align: center;
+            font-size: .9em;
+            color: #000;
+            font-weight: 500;
+            margin-top: 20px;
+        }
+
+        .form-footer a {
+            color: #000;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="toggle-buttons">
+        <button class="toggle-btn active" id="login-toggle">Login</button>
+        <button class="toggle-btn" id="register-toggle">Register</button>
+    </div>
+
+    <div class="form-container">
+        <!-- Login Form -->
+        <form id="login-form" class="active" method="post" action="/login">
+            {% csrf_token %}
+            <h2>Login</h2>
+            <div class="input-box">
+                <span class="icon"><i class='bx bx-user'></i></span>
+                <input type="text" required autofocus name="email">
+                <label>Username</label>
+            </div>
+            <div class="input-box">
+                <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+                <input type="password" required name="password" >
+                <label>Password</label>
+            </div>
+            <button type="submit" class="btn">Login</button>
+        </form>
+
+        <!-- Registration Form -->
+        <form id="register-form" method="post" action="/register">
+            {% csrf_token %}
+            <h2>Register</h2>
+            <div class="input-box">
+                <span class="icon"><i class='bx bx-user'></i></span>
+                <input type="text" required name="full_name">
+                <label>Full Name</label>
+            </div>
+            <div class="input-box">
+                <span class="icon"><i class='bx bx-envelope'></i></span>
+                <input type="email" required name = "email">
+                <label>Email</label>
+            </div>
+            <div class="input-box">
+                <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+                <input type="password" required name="password">
+                <label>Password</label>
+            </div>
+            <button type="submit" class="btn">Register</button>
+        </form>
+    </div>
+
+    <div class="form-footer">
+        <p>Need help? <a href="#">Contact Support</a></p>
+    </div>
+</div>
+
+<script>
+    const loginToggle = document.getElementById('login-toggle');
+    const registerToggle = document.getElementById('register-toggle');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+
+    loginToggle.addEventListener('click', () => {
+        loginToggle.classList.add('active');
+        registerToggle.classList.remove('active');
+        loginForm.classList.add('active');
+        registerForm.classList.remove('active');
+    });
+
+    registerToggle.addEventListener('click', () => {
+        registerToggle.classList.add('active');
+        loginToggle.classList.remove('active');
+        registerForm.classList.add('active');
+        loginForm.classList.remove('active');
+    });
+</script>
+
+</body>
+</html>

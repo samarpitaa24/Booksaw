@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block mainblock %}
+<section id="popular-books" class="bookshelf py-5 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-header align-center">
+                    <div class="title">
+                        <span>Some quality items</span>
+                    </div>
+                    <h2 class="section-title">Popular Books</h2>
+                </div>
+
+                <!-- Genre Tabs -->
+                <ul class="tabs">
+                    <li class="tab {% if genre_id is None %}active{% endif %}">
+                        <a href="/popular/">All Genre</a>
+                    </li>
+                    <!-- Loop through all genres -->
+                    {% for gen in genre %}
+                        <li class="tab {% if genre_id == gen.id %}active{% endif %}">
+                            <a href="/popular/{{ gen.id }}/">
+                                {{ gen.genre_name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                
+                <div class="row">
+                    {% if books %}
+                        {% for book in books %}
+                            <div class="col-md-3 mb-4">
+                                <div class="product-item">
+                                    <figure class="product-style">
+                                        <a href="book_details/{{ book.id }}">
+                                            <img src="{{ book.image.url }}" alt="{{ book.name }}" class="product-item">
+                                        </a>
+                                        <a href= "add-to-cart/{{book.id}}">
+                                            <button type="button" class="add-to-cart">Add to Cart</button>
+                                            </a>
+                                    </figure>
+                                    <figcaption>
+                                        <a href="book_details/{{ book.id }}">
+                                            <h3>{{ book.name }}</h3>
+                                        </a>
+                                        <span>{{ book.author }}</span>
+
+                                        {% comment %} <div class="item-price">${{ book.price }}</div> {% endcomment %}
+                                        <div class="item-price">
+                                            {% if book.offer_status %}
+                                                <span class="prev-price">₹ {{ book.price }}</span>₹{{ book.offer_price }}
+                                            {% else %}
+                                            ₹{{ book.price }}
+                                            {% endif %}
+                                        </div>
+                                    </figcaption>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No books found.</p>
+                    {% endif %}
+                </div>
+            </div><!-- inner-tabs -->
+        </div>
+    </div>
+</section>
+{% endblock mainblock %}

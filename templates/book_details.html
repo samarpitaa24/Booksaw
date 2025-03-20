@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block mainblock %}
+    <div class="book-details-container" style="display: flex; max-width: 1200px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; background-color: #EFEEE8;">
+        <div class="book-image" style="flex: 1; padding-right: 20px;">
+            <img src="{{ book.image.url  }}" alt="{{ book.name }}" style="width: 100%; height: auto; max-width: 400px; border: 1px solid #ddd; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        </div>
+        <div class="book-details" style="flex: 2;">
+            <h1 class="book-title" style="font-size: 2rem; font-family:serif; color: #333; margin-bottom: 10px;">{{ book.name }}</h1>
+            <p class="book-author" style="font-size: 1.1rem; color: #757575;">by <span style="font-weight: bold;">{{ book.author }}</span></p>
+
+            {% if book.offer_status %}
+                <p class="book-price" style="font-size: 1.5rem; color: #74642F; font-weight: bold; margin: 15px 0;">
+                    <span class="prev-price">$ {{ book.price }}</span>${{ book.offer_price }}
+                </p>
+            {% else %}
+                <p class="book-price" style="font-size: 1.5rem; color: #74642F; font-weight: bold; margin: 15px 0;">
+                    ${{ book.price }}
+                </p>
+            {%endif %}
+
+        
+            <p class="book-description" style="font-size: 1rem; color: #757575; line-height: 1.5; margin-bottom: 20px;">
+                {{ book.desc  }}
+            </p>
+            <button class="add-to-cart-btn" style="background-color: #000000; color: white; padding: 12px 20px; font-size: 1.1rem; cursor: pointer; border: none; border-radius: 5px; transition: background-color 0.3s;">
+                Add to Cart
+            </button>
+        </div>
+    </div>
+{% endblock mainblock %}
+
+
+                                                

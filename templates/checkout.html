@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}  
+        
+{% block mainblock %}
+        <!-- Breadcrumb Start -->
+        <div class="breadcrumb-wrap">
+            <div class="container">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Products</a></li>
+                    <li class="breadcrumb-item active">Checkout</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Breadcrumb End -->
+        
+        
+        <!-- Checkout Start -->
+        <div class="checkout">
+            <div class="container"> 
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="billing-address">
+                            <h2>Billing Address</h2>
+                            <form action="/checkout" method="post"> 
+                                {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Mobile No*</label>
+                                    <input class="form-control" type="text" required name="mobile_no" placeholder="Mobile No">
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Address*</label>
+                                    <input class="form-control" type="text" required name="address" placeholder="Address">
+                                </div>
+                                
+                                <div class="checkout-payment">
+                                    <div class="checkout-btn">
+                                        <input type="submit" value="Place Order">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        </div>
+                        
+                        
+                    </div>
+                    <div class="col-md-5">
+                        <div class="checkout-summary">
+                            <h2>Cart Total</h2>
+                            <div class="checkout-content">
+                                <h3>Products</h3>
+                                {% for item in cart_items.all %}
+                                <p>{{item.name}}<span>₹ {{item.price}}</span></p>
+                                {% endfor %}
+                                <h4>Grand Total<span>₹ {{grand_sum}}</span></h4>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Checkout End -->
+        
+{% endblock mainblock %}

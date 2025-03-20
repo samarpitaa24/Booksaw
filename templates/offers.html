@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block mainblock %}
+
+<section id="special-offer" class="bookshelf pb-5 mb-5">
+
+    <div class="section-header align-center">
+        <div class="title">
+            <span>Grab your opportunity</span>
+        </div>
+        <h2 class="section-title">Books with offer</h2>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            {% for book in offer_books %}
+                <div class="col-md-3 mb-4">
+                    <div class="product-item">
+                        <figure class="product-style">
+                            <a href="book_details/{{ book.id }}">
+                                <img src="{{ book.image.url }}" alt="{{ book.name }}" class="product-item">
+                            </a>
+                            <a href= "add-to-cart/{{book.id}}">
+                                <button type="button" class="add-to-cart">Add to Cart</button>
+                                </a>
+                        </figure>
+                        <figcaption>
+                            <a href="book_details/{{ book.id }}">
+                                <h3>{{ book.name }}</h3>
+                            </a>
+                            <span>{{ book.author }}</span>
+                            <div class="item-price">
+                                <span class="prev-price">₹{{ book.price }}</span>₹{{ book.offer_price }}
+                            </div>
+                        </figcaption>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:4 %}
+                    </div><div class="row">
+                {% endif %}
+            {% endfor %}
+        </div> <!-- End of row -->
+    </div> <!-- End of container -->
+</section>
+
+
+
+{% endblock mainblock %}

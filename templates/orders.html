@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+        
+   {% block mainblock %}
+        
+        
+        
+        <<div class="cart-page" style="padding: 40px 0; background-color:#EFEEE8;">
+            <div class="container" style="max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive" style="overflow-x: auto;">
+                            <table class="table table-bordered" style="width: 100%; border-collapse: collapse;">
+                                <thead class="thead-dark" style="background-color: #343a40; color: white;">
+                                    <tr>
+                                        <th style="padding: 10px; text-align: left;">Order Id</th>
+                                        <th style="padding: 10px; text-align: left;">Orders Items</th>
+                                        <th style="padding: 10px; text-align: left;">Order Price</th>
+                                        <th style="padding: 10px; text-align: left;">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="align-middle">
+                                    {% for order in order_list %}
+                                    <tr style="background-color: #fff;">
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">{{order.order_id}}</td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">
+                                            <ol style="padding-left: 15px; margin: 0;">
+                                                {% for ord in orders %}
+                                                {% if ord.order_id == order.order_id %}
+                                                    <li style="margin-bottom: 5px;">{{ord.product.name}}</li>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </ol>
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">₹ {{order.order_price}}</td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">{{order.status}}</td>    
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+{% endblock mainblock %}     

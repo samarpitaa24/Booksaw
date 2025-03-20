@@ -1,0 +1,4 @@
+/env
+/Booksaw/__pycache__/*
+/Bookhive/__pycache__/*
+/Bookhive/migrations/*
