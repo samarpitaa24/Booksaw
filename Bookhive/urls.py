@@ -16,15 +16,18 @@ urlpatterns = [
     
     path('popular/', views.popular, name='popular'),
     path('popular/<int:genre_id>/', views.popular, name='popular-genre'),
-    
+     path('add-to-cart/<int:book_id>', views.add_to_cart, name='add-to-cart'),
+    path('popular/<int:genre_id>/add-to-cart/<int:book_id>/', views.add_to_cart_with_genre, name='add-to-cart-with-genre'),
     
     
     path('offers', views.offers , name='offers'),
     path('download', views.download, name='download'),
-    path('articles', views.articles, name='articles'),
+    # path('articles', views.articles, name='articles'),
     
     path('cart', views.cart, name='cart'),
-    path('add-to-cart/<int:book_id>', views.add_to_cart, name='add-to-cart'),
+   
+
+
     path('basepopular/add-to-cart/<int:book_id>', views.add_to_cart, name='add-to-cart'),
     
      path('delete-cart-item/<int:book_id>', views.delete_cart_item, name='delete-cart-item'),

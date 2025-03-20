@@ -32,8 +32,8 @@ def offers(request):
     offer_books = Books.objects.filter(offer_status= True)
     return render(request, 'offers.html', {'offer_books':offer_books})
 
-def articles(request):
-    return render(request, 'articles.html', {})
+# def articles(request):
+#     return render(request, 'articles.html', {})
 
 
 
@@ -165,6 +165,10 @@ def add_to_cart(request, book_id):
     else:
         print("User is not logged in")
     return redirect(request.META.get('HTTP_REFERER', '/'))
+
+def add_to_cart_with_genre(request, genre_id, book_id):
+    return add_to_cart(request, book_id)
+
 
 
 def delete_cart_item(request, book_id):

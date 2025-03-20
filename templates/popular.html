@@ -16,12 +16,11 @@
                 <!-- Genre Tabs -->
                 <ul class="tabs">
                     <li class="tab {% if genre_id is None %}active{% endif %}">
-                        <a href="/popular/">All Genre</a>
+                        <a href="{% url 'popular' %}">All Genre</a>
                     </li>
-                    <!-- Loop through all genres -->
                     {% for gen in genre %}
                         <li class="tab {% if genre_id == gen.id %}active{% endif %}">
-                            <a href="/popular/{{ gen.id }}/">
+                            <a href="{% url 'popular-genre' gen.id %}">
                                 {{ gen.genre_name }}
                             </a>
                         </li>
@@ -34,25 +33,31 @@
                             <div class="col-md-3 mb-4">
                                 <div class="product-item">
                                     <figure class="product-style">
-                                        <a href="book_details/{{ book.id }}">
+                                        <a href="{% url 'book-details' book.id %}">
                                             <img src="{{ book.image.url }}" alt="{{ book.name }}" class="product-item">
                                         </a>
-                                        <a href= "add-to-cart/{{book.id}}">
+
+                                        <!-- Add to Cart Button (Handles Genre Selection) -->
+                                        {% if genre_id %}
+                                            <a href="{% url 'add-to-cart-with-genre' genre_id book.id %}">
+                                        {% else %}
+                                            <a href="{% url 'add-to-cart' book.id %}">
+                                        {% endif %}
                                             <button type="button" class="add-to-cart">Add to Cart</button>
-                                            </a>
+                                        </a>
                                     </figure>
+
                                     <figcaption>
-                                        <a href="book_details/{{ book.id }}">
+                                        <a href="{% url 'book-details' book.id %}">
                                             <h3>{{ book.name }}</h3>
                                         </a>
                                         <span>{{ book.author }}</span>
 
-                                        {% comment %} <div class="item-price">${{ book.price }}</div> {% endcomment %}
                                         <div class="item-price">
                                             {% if book.offer_status %}
-                                                <span class="prev-price">₹ {{ book.price }}</span>₹{{ book.offer_price }}
+                                                <span class="prev-price">₹ {{ book.price }}</span> ₹{{ book.offer_price }}
                                             {% else %}
-                                            ₹{{ book.price }}
+                                                ₹{{ book.price }}
                                             {% endif %}
                                         </div>
                                     </figcaption>
