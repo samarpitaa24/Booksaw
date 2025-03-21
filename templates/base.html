@@ -77,15 +77,15 @@
                                     {% endif %}
                                     <div class="action-menu">
 
-								{% comment %} <div class="search-bar">
-									<a href="#" class="search-button search-toggle" data-selector="#header-wrap">
-										<i class="icon icon-search"></i>
-									</a>
-									<form role="search" method="get" class="search-box">
-										<input class="search-field text search-input" placeholder="Search"
-											type="search">
-									</form>
-								</div> {% endcomment %}
+                                        {% if request.user.is_authenticated and request.user.is_staff %}
+                                        <div class="add-book">
+                                            <a href="/add_book" class="add-book-btn" data-selector="#header-wrap">
+                                                <i class="fas fa-plus"></i> <!-- Font Awesome Plus Icon -->
+                                            </a>
+                                           
+                                        </div>
+                                    {% endif %}
+                                    
 							</div>
 
 						</div><!--top-right-->
@@ -203,10 +203,10 @@
                     <h5>Discover</h5>
                     <ul class="menu-list">
                         <li class="menu-item">
-                            <a href="#">Home</a>
+                            <a href="{% url "home" %}">Home</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#">Books</a>
+                            <a href="{% url "popular" %}">Books</a>
                         </li>
                         <li class="menu-item">
                             <a href="#">Authors</a>
@@ -230,13 +230,13 @@
                             <a href="#">Sign In</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#">View Cart</a>
+                            <a href="/cart">View Cart</a>
                         </li>
                         <li class="menu-item">
                             <a href="#">My Wishtlist</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#">Track My Order</a>
+                            <a href="/orders">Track My Order</a>
                         </li>
                     </ul>
                 </div>
@@ -279,8 +279,8 @@
                     <div class="row">
 
                         <div class="col-md-6">
-                            <p>© 2022 All rights reserved. Free HTML Template by <a
-                                    href="https://www.templatesjungle.com/" target="_blank">TemplatesJungle</a></p>
+                            <p>© 2022 All rights reserved. <a
+                                    href="https://www.templatesjungle.com/" target="_blank"></a></p>
                         </div>
 
                         <div class="col-md-6">

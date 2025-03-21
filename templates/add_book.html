@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> BookSaw</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+        
+        body {
+            background-color: #fdf6f0;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color:#F3F2EC;
+            color:#2f2f2f;
+            text-align: center;
+            padding: 15px;
+            font-size: 26px;
+            font-weight: bold;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .product-card {
+            background-color: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .product-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: contain;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .product-card h3 {
+            font-size: 16px;
+            color: #6a0572;
+            margin-bottom: 5px;
+        }
+        
+        .desc {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 8px;
+        }
+        
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #b56576;
+            margin-bottom: 10px;
+        }
+        
+        .offer-pricing{
+            font-size: 18px;
+            font-weight: bold;
+            color: #b56576;
+            margin-bottom: 10px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .buy-btn {
+            background-color: #2f2f2f;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+        
+        .buy-btn:hover {
+            background-color:#2f2f2f;
+        }
+        
+        .form-container {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .form-row label {
+            font-size: 16px;
+            color: #6a0572;
+            margin-right: 10px;
+            width: 120px; /* Space for the label */
+        }
+        
+        .form-container input, .form-container textarea, .form-container select {
+            width: calc(100% - 130px); /* Make input fields fit within the row */
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .form-container button {
+            background-color: #2f2f2f;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+        
+        .form-container button:hover {
+            background-color: #2f2f2f;
+        }
+
+        span.prev-price {
+            color: #999;
+            {% comment %} font-size: 0.8em; {% endcomment %}
+            font-size: 18px;
+            padding-right: 10px;
+            text-decoration: line-through;
+          }
+    </style>
+</head>
+<body>
+    <header>BookSaw</header>
+    
+    <div class="container">
+        <div class="form-container">
+            <h2>Add a New Book</h2>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
++
+                <div class="form-row">
+                    <label for="name">Book Name</label>
+                    {{ form.name }}
+                </div>
+
+                <div class="form-row">
+                    <label for="author">Author</label>
+                    {{ form.author }}
+                </div>
+                
+                <div class="form-row">
+                    <label for="desc">Description</label>
+                    {{ form.desc }}
+                </div>
+                
+                <div class="form-row">
+                    <label for="price">Price</label>
+                    {{ form.price }}
+                </div>
+
+                <div class="form-row">
+                    <label for="shippingcost">Shipping Cost</label>
+                    {{ form.shipping_cost }}
+                </div>
+
+                <div class="form-row">
+                    <label for="status">Featured Status</label>
+                    {{ form.status }}
+                </div>
+                <div>
+                    <div class="form-row">
+                        <label for="offerstatus">Offer Status</label>
+                        {{ form.offer_status }}
+                    </div>
+    
+                    <div class="form-row">
+                        <label for="offerprice">Offer Price</label>
+                        {{ form.offer_price }}
+                    </div>
+                <div/>
+                
+                <div class="form-row">
+                    <label for="genre">Genre</label>
+                    {{ form.genre }}
+                </div>
+                
+                <div class="form-row">
+                    <label for="image">Book Image</label>
+                    {{ form.image }}
+                </div>
+
+
+                
+                {% comment %} <div class="form-row">
+                    <label for="prodtype">Category</label>
+                    <input list="prodtype-suggestions" name="prodtype" id="prodtype" value="{{ form.prod_type.value }}" />
+                    <datalist id="category-suggestions">
+                        <option value="plant">
+                        <option value="pot">
+                        <option value="seed">
+                        <option value="equipment">
+                    </datalist>
+                </div> {% endcomment %}
+                
+                <button type="submit">Add Book</button>
+            </form>
+        </div>
+        
+        <h2 style="text-align:center; margin: 20px 0; color:#b56576">All Books</h2>
+        <div class="product-grid">
+            {% for book in data %}
+            
+            <div class="product-card">
+            {% if book.image %}
+    {% with book.image.url as img_url %}
+        <img src="{{ img_url }}" alt="{{ book.name }}">
+    {% endwith %}
+{% endif %}
+
+
+                <h3>{{ book.name }}</h3>
+                {% comment %} <p class="desc">{{ book.desc }}</p> {% endcomment %}
+
+                <div class="offer-pricing">
+                {% if book.offer_status %}
+                <span class="prev-price">₹{{ book.price }}</span>₹{{ book.offer_price }}
+                {% else %}
+                <p class="price">₹{{ book.price }}</p>
+                {% endif %} 
+                </div>
+                
+                {% comment %} <div class="item-price">
+                    {% if book.offer_status %}
+                        <span class="prev-price">₹{{ product.price }}</span>₹{{ product.offer_price }}
+                    {% else %}
+                    ₹{{ product.price }}
+                    {% endif %}
+                </div> {% endcomment %}
+
+
+                <div class="btn-container">
+
+                    <form action="{% url 'update-data' book.id %}" method="GET">
+                    {% csrf_token %}
+                    <button class="buy-btn" type="submit">Update</button>
+                    </form>
+
+                    <form action="{% url 'deletedata' book.id %}" method="GET">
+                        {% csrf_token %}
+                        <button class="buy-btn" type="submit">Delete</button>
+                    </form>
+
+                </div> 
+            </div>
+            {% endfor %}
+
+            
+
+        </div>
+    </div>
+</body>
+</html>

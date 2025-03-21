@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            .form-container {
+                background-color: #fff;
+                padding: 15px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            
+            .form-row {
+                display: flex;
+                align-items: center;
+                margin: 10px 0;
+            }
+    
+            .form-row label {
+                font-size: 16px;
+                color: #6a0572;
+                margin-right: 10px;
+                width: 120px; /* Space for the label */
+            }
+            
+            .form-container input, .form-container textarea, .form-container select {
+                width: calc(100% - 130px); /* Make input fields fit within the row */
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+            }
+            
+            .form-container button {
+                background-color: #2f2f2f;
+                color: white;
+                padding: 10px;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 14px;
+                transition: background 0.3s ease;
+            }
+            
+            .form-container button:hover {
+                background-color: #f285a2;
+            }
+    
+            span.prev-price {
+                color: #999;
+                {% comment %} font-size: 0.8em; {% endcomment %}
+                font-size: 18px;
+                padding-right: 10px;
+                text-decoration: line-through;
+              }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="form-container">
+                <h2>Update Book</h2>
+                <form method="POST" enctype="multipart/form-data" >
+                    {% csrf_token %}
+                    
+                  
+                <div class="form-row">
+                    <label for="name">Book Name</label>
+                    {{ form.name }}
+                </div>
+
+                <div class="form-row">
+                    <label for="author">Author</label>
+                    {{ form.author }}
+                </div>
+                
+                <div class="form-row">
+                    <label for="desc">Description</label>
+                    {{ form.desc }}
+                </div>
+                
+                <div class="form-row">
+                    <label for="price">Price</label>
+                    {{ form.price }}
+                </div>
+
+                <div class="form-row">
+                    <label for="shippingcost">Shipping Cost</label>
+                    {{ form.shipping_cost }}
+                </div>
+
+                <div class="form-row">
+                    <label for="status">Featured Status</label>
+                    {{ form.status }}
+                </div>
+                <div>
+                    <div class="form-row">
+                        <label for="offerstatus">Offer Status</label>
+                        {{ form.offer_status }}
+                    </div>
+    
+                    <div class="form-row">
+                        <label for="offerprice">Offer Price</label>
+                        {{ form.offer_price }}
+                    </div>
+                <div/>
+                
+                <div class="form-row">
+                    <label for="genre">Genre</label>
+                    {{ form.genre }}
+                </div>
+                
+                <div class="form-row">
+                    <label for="image">Book Image</label>
+                    {{ form.image }}
+                </div>
+        
+                    
+                    {% comment %} <div class="form-row">
+                        <label for="prodtype">Category</label>
+                        <input list="prodtype-suggestions" name="prodtype" id="prodtype" value="{{ form.prod_type.value }}" />
+                        <datalist id="category-suggestions">
+                            <option value="plant">
+                            <option value="pot">
+                            <option value="seed">
+                            <option value="equipment">
+                        </datalist>
+                    </div> {% endcomment %}
+                    {% comment %} <input type="submit" value="Update"> {% endcomment %}
+                    {% comment %} <a href="{% url 'add-product'%}"> {% endcomment %}
+                    <button type="submit">Update Book</button> 
+                    
+                </form>
+            </div>
+
+    </body>
+</html>
+
+

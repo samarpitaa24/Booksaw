@@ -1,8 +1,9 @@
-from django.shortcuts import render, HttpResponse , redirect
+from django.shortcuts import render, HttpResponse , redirect,HttpResponseRedirect
 from django.contrib.auth.models import User 
 from django.contrib.auth import authenticate, login , logout
 from django.contrib import messages
 from .models import Books, Genre, Cart, Order
+from .forms import BookForm
 
 # Create your views here.
 
@@ -242,3 +243,38 @@ def orders(request):
     print(order_list, orders)
     return render(request, "orders.html", {"order_list": order_list, "orders": orders})
 
+#  path('add_book', views.add_book , name="add-product"),
+#     path("update_data/<int:id>",views.update_data, name="update-data"),
+#     path("delete_data/<int:id>",views.delete_data, name="deletedata"),
+    
+    
+def add_book(request):
+    if request.method == "POST":
+        form = BookForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("/")
+        data = Books.objects.all()
+    else:
+        form = BookForm()
+        data = Books.objects.all()
+    return render(request, 'add_book.html', {'data':data, 'form' : form})
+
+def update_data(request,id):
+    if request.method == "POST":
+        pi = Books.objects.get(pk=id)
+        fm = BookForm(request.POST, instance=pi)
+        if fm.is_valid():
+            fm.save()
+            return redirect("/")
+    else :
+        pi= Books.objects.get(pk=id)
+        fm =BookForm(instance=pi)
+    return render(request, 'update.html', {'form':fm})
+    
+    
+def delete_data(request,id):
+    if request.method=="POST":
+        pi = Books.objects.get(pk=id)
+        pi.delete()
+        return HttpResponseRedirect("/") #redirects on homepage

@@ -16,8 +16,11 @@ urlpatterns = [
     
     path('popular/', views.popular, name='popular'),
     path('popular/<int:genre_id>/', views.popular, name='popular-genre'),
-     path('add-to-cart/<int:book_id>', views.add_to_cart, name='add-to-cart'),
+    path('add-to-cart/<int:book_id>', views.add_to_cart, name='add-to-cart'),
     path('popular/<int:genre_id>/add-to-cart/<int:book_id>/', views.add_to_cart_with_genre, name='add-to-cart-with-genre'),
+    # path('book_details/<int:book_id>/add-to-cart/<int:book_id>', views.add_to_cart, name='add-to-cart'),
+    
+    # book_details/2/add-to-cart/2
     
     
     path('offers', views.offers , name='offers'),
@@ -49,7 +52,9 @@ urlpatterns = [
     
     path('book_details/<int:id>/', views.bk_details , name='book-details'),
     
-    
+    path('add_book', views.add_book , name="add-product"),
+    path("update_data/<int:id>",views.update_data, name="update-data"),
+    path("delete_data/<int:id>",views.delete_data, name="deletedata"),
     
 ]
 # http://127.0.0.1:8000/basepopular/Business/book_details/12

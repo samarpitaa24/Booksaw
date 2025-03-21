@@ -25,9 +25,11 @@
             <p class="book-description" style="font-size: 1rem; color: #757575; line-height: 1.5; margin-bottom: 20px;">
                 {{ book.desc  }}
             </p>
+            <a href="{% url 'add-to-cart' book.id %}">
             <button class="add-to-cart-btn" style="background-color: #000000; color: white; padding: 12px 20px; font-size: 1.1rem; cursor: pointer; border: none; border-radius: 5px; transition: background-color 0.3s;">
                 Add to Cart
             </button>
+        </a>
         </div>
     </div>
 {% endblock mainblock %}
