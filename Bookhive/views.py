@@ -6,13 +6,8 @@ from .models import Books, Genre, Cart, Order
 from .forms import BookForm
 
 
-from .data.books_data import books_data
-from .data.authors_data import authors_data
 
-from collections import Counter
-from django.db.models import Count
-from thefuzz import process
-from django.urls import reverse
+
 
 # Create your views here.
 
@@ -91,22 +86,6 @@ def sign_out(request):
     return redirect('/')
 
 
-
-# def popular(request, id=None):
-#     if id:
-#         books = Books.objects.get(id = id)  
-#         print("books_genre_id", id)
-#         print("books", books)# Filter books by genre
-#     else:
-#         books = Books.objects.all()  # Show all books if no genre is selected
-#     return render(request, 'popular.html', {'books': books})
-
-    
-# def popular(request):
-#     books = Books.objects.all()
-#     genre = Genre.objects.all()
-#     return render(request, 'popular.html', {'books': books , 'genre': genre} ) 
-
 def popular(request, genre_id=None):
     books = Books.objects.filter(genre_id=genre_id) if genre_id else Books.objects.all()
     return render(request, 'popular.html', {
@@ -124,10 +103,6 @@ def bk_details(request, genre=None, id=None) :
         book = Books.objects.get(id=id)
     return render(request, 'book_details.html',{'book' : book})
     
-    
-# def cart(request) :
-#     print("cart")
-#     return render (request , 'cart.html', {})
 
 def cart(request):
     if request.user.is_authenticated:
@@ -252,10 +227,6 @@ def orders(request):
     print(order_list, orders)
     return render(request, "orders.html", {"order_list": order_list, "orders": orders})
           
-#  path('add_book', views.add_book , name="add-product"),
-#     path("update_data/<int:id>",views.update_data, name="update-data"),
-#     path("delete_data/<int:id>",views.delete_data, name="deletedata"),
-    
     
 def add_book(request):
     if request.method == "POST":
@@ -291,234 +262,13 @@ def delete_data(request,id):
     
 #chatbot working 
 
-# ## Function to generate clickable book link (if required later)
-# def generate_book_link(book):
-#     """Generate a clickable book title that links to the book's detail page."""
-#     book_url = reverse('book-details', args=[book.id])
-#     return f'<a href="{book_url}" target="_blank">{book.name}</a>'
-
-
-# # Function to fetch trending books based on order history
-# def get_trending_books(limit=5):
-#     """Returns a list of trending books."""
-#     trending_books = Books.objects.annotate(order_count=Count('order'))
-#     trending_books = trending_books.order_by('-order_count')[:limit]  # Order by highest order count
-#     return [book.name for book in trending_books]
-
-
-# # Function to recommend books by genre
-# def recommend_books_by_genre(genre):
-#     """Recommends books based on the specified genre."""
-#     allowed_genres = {"Fiction", "Adventure", "Romance", "Mystery", "Business"}
-
-#     if genre.lower() not in {g.lower() for g in allowed_genres}:  
-#         return "Sorry, we don't have books for that genre."
-
-#     books = Books.objects.filter(genre__genre_name__iexact=genre)  # Case-insensitive search
-#     recommendations = [book.name for book in books]
-
-#     return f"Here are some {genre} books: {', '.join(recommendations)}" if recommendations else f"No books found in {genre} genre."
-
-
-# # Function to recommend books by author
-# def recommend_books_by_author(author):
-#     """Recommends books based on the author."""
-#     books_by_author = Books.objects.filter(author=author)
-#     recommendations = [book.name for book in books_by_author]
-
-#     return f"Books by {author}: {', '.join(recommendations)}" if recommendations else f"No books found by {author}."
-
-
-# def get_book_info(book_title):
-#     """Fetch book details from the books_data."""
-#     for book in books_data:  # books_data is a list of dictionaries with book information
-#         if book["title"].lower() == book_title.lower():
-#             return f"'{book['title']}' by {book['author']}. {book['description']}"
-    
-#     return "Sorry, I couldn't find that book."
-
-
-# # Fetch author details and notable works from authors_data
-# def get_author_info(author_name):
-#     """Fetch author details and notable works from authors_data."""
-#     author_info = authors_data.get(author_name)
-
-#     if author_info:
-#         notable_works = ', '.join(author_info.get('notable_works', []))
-#         suggestions = ', '.join(author_info.get('suggestions', []))
-#         return f"{author_name}: {author_info['bio']} Notable works: {notable_works}. Suggested books: {suggestions}."
-    
-#     return "Sorry, I couldn't find that author."
-
-# # Utility function to normalize author name (remove spaces and periods)
-# def normalize_author_name(author_name):
-#     """Normalize author name by removing spaces and periods."""
-#     return author_name.replace(" ", "").replace(".", "").lower()
-
-
-# def normalize_book_title(book_title):
-#     """Normalize book title by removing spaces and periods and making it lowercase."""
-#     return book_title.replace(" ", "").replace(".", "").lower()
-
-# # Handle different types of user queries
-# def get_bot_response(user_message):
-#     """Handles different types of user queries using grouped keywords."""
-#     user_message = user_message.lower().strip()
-#     print(f"User Message: {user_message}")  # Debugging
-
-#     # Define keyword sets
-#     recommend_keywords = {
-#         "recommend", "suggest", "advise", "give me", "recommendation",
-#         "any good", "what should i read", "book for me", "suggestion"
-#     }
-
-#     genre_keywords = {
-#         "mystery", "fantasy", "romance", "thriller", "science fiction",
-#         "horror", "comedy", "drama", "historical", "adventure", "self-help",
-#         "biography", "non-fiction", "dystopian", "classic", "crime",
-#         "psychological", "business", "fiction"  # Added missing genres
-#     }
-
-#     author_keywords = {
-#         "author", "writer", "who wrote", "who is", "written by", "creator of",
-#         "who's the author", "who's the writer"
-#     }
-
-#     book_info_keywords = {
-#         "book info", "tell me about", "describe", "book", "summary of",
-#         "what is", "explain", "plot of", "story of", "what's this book about"
-#     }
-
-#     trending_keywords = {
-#         "trending", "popular", "bestseller", "hot books", "top books",
-#         "most read", "famous books", "best books", "top rated", "currently trending", "trending book"
-#     }
-
-#     irrelevant_phrases = [
-#         "book info", "tell me about", "describe", "summary of", "what is", "explain", "plot of", "story of", "what's this book about"
-#     ]
-    
-    
-#     words = set(user_message.split())  # Convert user message to a set of words
-#     print(f"Detected Words: {words}")  # Debugging
-
-#     # If user asks for recommendations
-#     if words & recommend_keywords:
-#         genre = next((word for word in words if word in genre_keywords), None)
-#         if genre:
-#             print(f"Genre Extracted: {genre}")  # Debugging
-#             return recommend_books_by_genre(genre)
-#         return "Would you like a recommendation based on a genre or an author? Please specify!"
-
-#     # If user just says "genre"
-#     if user_message == "genre":
-#         return "Which genre are you interested in? Please type the genre name (e.g., mystery, fantasy)."
-
-#     # If user types a genre directly (e.g., "mystery")
-#     if user_message in genre_keywords:
-#         print(f"User specified genre: {user_message}")  # Debugging
-#         return recommend_books_by_genre(user_message)
-
-#     # If user just says "author"
-#     if user_message == "author":
-#         return "Which author are you asking about? Please type the author's name."
-
-#     # Check if the user input matches an author name directly
-#     normalized_user_message = normalize_author_name(user_message)  # Normalize user message
-#     for author_name in authors_data.keys():
-#         if normalized_user_message == normalize_author_name(author_name):
-#             return get_author_info(author_name)  # Call function if a valid author is detected
-
-#     # If user asks about an author
-#     if words & author_keywords:
-#         author_name = user_message.replace("who wrote", "").replace("who is", "").replace("written by", "").replace(
-#             "author", "").replace("writer", "").replace("creator of", "").replace("who's the author", "").replace(
-#             "who's the writer", "").strip()
-#         print(f"Author Name Extracted: {author_name}")  # Debugging
-#         return get_author_info(author_name) if author_name else "Which author are you asking about?"
-
-#    # Check if the message contains book info keywords
-#     if any(keyword in user_message for keyword in book_info_keywords):
-#         # Remove irrelevant phrases while keeping the book title intact
-#         book_title = user_message
-#         for phrase in irrelevant_phrases:
-#             book_title = book_title.replace(phrase, "").strip()
-
-#         print(f"Extracted Book Title: {book_title}")  # Debugging
-
-#         # Normalize the extracted book title
-#         normalized_book_title = normalize_book_title(book_title)
-
-#         print(f"Normalized Book Title: {normalized_book_title}")  # Debugging
-
-#         # Call the get_book_info function with the normalized title
-#         return get_book_info(normalized_book_title)
-
-
-#     # If user asks about trending books
-#     if words & trending_keywords:
-#         print("Fetching Trending Books...")  # Debugging
-#         trending_books = get_trending_books()
-#         return f"Here are some trending books: {', '.join(trending_books)}" if trending_books else "No trending books found."
-
-#     # Default response if no match is found
-#     print("No match found.")  # Debugging
-#     return "Sorry, I didn't understand that. Try asking for book recommendations, author info, or trending books!"
-
-
-
-# chat_history = []
-
-# def chatbot_view(request):
-#     """
-#     Handles the chatbot interaction where the user submits messages and receives bot responses.
-#     """
-#     global chat_history
-
-#     if request.method == "POST":
-#         # Get the user's message
-#         user_message = request.POST.get("user_message", "").strip()
-
-#         if user_message:
-#             # Add the user's message to the chat history
-#             chat_history.append({"text": user_message, "user": True})
-
-#             # Get the bot's response based on the user message
-#             bot_response = get_bot_response(user_message)
-
-#             # Add the bot's response to the chat history
-#             chat_history.append({"text": bot_response, "user": False})
-
-#     return render(request, 'chatbot.html', {
-#         'chat_history': chat_history
-#     })
-
-
-
-
-
-
-
 # Importing the keywords from the external data file , for random 
-from .data.keywords import recommendation_keywords
+from .data.keywords import recommendation_keywords ,trending_keywords ,genre_keywords ,info_keywords
+from .data.books_data import books_data
+from .data.authors_data import authors_data
+from collections import Counter
 
-# def handle_book_recommendation_request(user_message):
-#     # Split the user message into words/phrases
-#     user_words = user_message.lower().split()  # Split based on space; can enhance with regex for more complex splitting
-
-#     # Check if any word or phrase matches with keywords
-#     for word in user_words:
-#         if word in recommendation_keywords:
-#             # If the message contains a recommendation request, ask for genre
-#             return "Please specify a genre. Available genres are: Fiction, Adventure, Romance, Mystery, Business."
-
-#     # If no match is found, return a fallback message
-#     return "Sorry, I didn't quite understand your request. Could you please ask for a book recommendation?"
-
-
-#for genre based 
-from .data.keywords import genre_keywords
-
+#for genre based recommendation
 def match_genre(user_message):
     """
     Match user input with genre keywords and return the matched genre(s).
@@ -567,7 +317,7 @@ def recommend_books_by_genre(user_message):
 
 
 
-
+#author based recommendation
 def extract_authors_from_message(user_message):
     """
     Extracts author names from the user message. Supports multiple authors separated by commas or conjunctions.
@@ -621,7 +371,7 @@ def recommend_books_by_author(user_message):
 
     return response
 
-
+#main recommendation handling function
 def handle_book_recommendation_request(user_message):
     """
     Handle book recommendation request based on the user's message.
@@ -662,10 +412,7 @@ def handle_book_recommendation_request(user_message):
     return "I'm sorry, I didn't quite understand your request. Can you please rephrase it as a book recommendation request?"
 
 
-
-
-from .data.keywords import info_keywords
-
+#display author or book info
 def extract_book_or_author_name(user_message):
     """
     Extracts book or author names from the user message. Looks for specific words 
@@ -733,11 +480,7 @@ def display_info(user_message):
     return "I'm sorry, I only respond to requests for information on books or authors. Please specify what you want info about."
 
 
-
-from collections import Counter
-from .data.keywords import trending_keywords 
-
-
+#recommend trending books
 def get_trending_books():
     """
     Fetches the top 5 trending books based on order frequency.
@@ -771,6 +514,8 @@ def handle_trending_books_request(user_message):
     # If the message does not contain any trending-related keywords
     return "Sorry, I couldn't understand your request for trending books. Please mention keywords like 'trending', 'popular', etc."
 
+
+#using all functions to get a final response
 def get_response(user_message):
     """
     This function processes the user's message and routes it to the corresponding function based on the content.
@@ -813,7 +558,7 @@ def get_response(user_message):
     return "I'm sorry, I didn't quite understand your request. Could you please rephrase it?"
 
 
-
+#uses get_response which is displayed via chatbot_view
 def chatbot_view(request):
     """
     Handles the chatbot interaction, receives user message, processes it, and displays the response.
@@ -836,7 +581,7 @@ def chatbot_view(request):
     chat_history = request.session.get('chat_history', [])
     return render(request, 'chatbot.html', {'chat_history': chat_history})
 
-
+#to clear chat
 def clear_chat(request):
     if request.method == 'POST':
         request.session['chat_history'] = []
