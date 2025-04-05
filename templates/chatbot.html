@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block mainblock %}
+<div class="chat-container">
+    <h2>Chat with our BookBot 📚</h2>
+
+    <div class="chat-box" id="chat-box">
+        {% for message in chat_history %}
+            <div class="{% if message.user %}user-message{% else %}bot-message{% endif %}">
+                {{ message.text }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="input-container">
+        <!-- Send Message Form -->
+        <form method="post" style="flex-grow: 1; display: flex;">
+            {% csrf_token %}
+            <input type="text" name="user_message" placeholder="Ask about books..." required style="flex-grow: 1;">
+            <button type="submit" title="Send">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </form>
+
+        <!-- Clear Chat Form -->
+        <form method="post" action="{% url 'clear_chat' %}">
+            {% csrf_token %}
+            <button type="submit" title="Clear Chat">
+                <i class="fas fa-trash"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<style>
+    :root {
+        --accent-color: #C5A992;
+        --secondary-color: #C5A992;
+        --dark-color: #2f2f2f;
+        --light-color: #F3F2EC;
+        --body-text-color: #757575;
+        --light-text-color: #afafaf;
+        --dark-text-color: #2f2f2f;
+        --user-message-bg: #d7cfc5; /* Light Beige for user */
+        --bot-message-bg: #f1f1f1; /* Light Gray for bot */
+    }
+    
+    .chat-container {
+        width: 100%;
+        max-width: 600px;
+        margin: 10px auto;
+        background-color: var(--light-color);
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        height: 90vh;
+    }
+    
+    h2 {
+        font-size: 1.6rem;
+        color: var(--dark-color);
+        text-align: center;
+    }
+    
+    .chat-box {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 15px;
+        background-color: var(--light-color);
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .user-message, .bot-message {
+        max-width: 80%;
+        padding: 12px 15px;
+        border-radius: 18px;
+        word-wrap: break-word;
+        font-size: 1rem;
+        line-height: 1.4;
+        display: inline-block;
+    }
+    
+    .user-message {
+        align-self: flex-end;
+        background-color: var(--user-message-bg);
+        color: var(--dark-color);
+        text-align: left;
+        border-top-right-radius: 4px;
+    }
+    
+    .bot-message {
+        align-self: flex-start;
+        background-color: var(--bot-message-bg);
+        color: var(--dark-color);
+        text-align: left;
+        border-top-left-radius: 4px;
+    }
+    
+    .input-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 10px;
+        padding: 10px;
+        background-color: var(--light-color);
+        border-top: 1px solid var(--secondary-color);
+    }
+    
+    .input-container form {
+        display: flex;
+        align-items: center;
+    }
+    
+    .input-container form:first-of-type {
+        flex-grow: 1;
+    }
+    
+    .input-container input {
+        flex-grow: 1;
+        padding: 10px 12px;
+        border-radius: 20px;
+        border: 1px solid var(--accent-color);
+        outline: none;
+        font-size: 1rem;
+    }
+    
+
+    
+    button {
+        padding: 6px 8px;              /* smaller size */
+        margin-left: 4px;
+        background-color: var(--accent-color);
+        color: var(--light-color);
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 0.9rem;             /* smaller icon size */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;                   /* make it round & consistent */
+        height: 32px;
+        margin-top: 0;
+    }
+    
+    button:hover {
+        background-color: var(--dark-color);
+        color: var(--light-color);
+    }
+    
+    
+    
+    .chat-box::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .chat-box::-webkit-scrollbar-thumb {
+        background-color: var(--secondary-color);
+        border-radius: 10px;
+    }
+    
+    .chat-box::-webkit-scrollbar-track {
+        background-color: var(--light-color);
+    }
+    
+</style>
+
+<script>
+    window.onload = function () {
+        var chatBox = document.getElementById("chat-box");
+        chatBox.scrollTop = chatBox.scrollHeight;
+    };
+</script>
+
+
+
+{% endblock mainblock %}

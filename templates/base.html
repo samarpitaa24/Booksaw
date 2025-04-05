@@ -1,5 +1,5 @@
-{%load static%}
-
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,6 +23,11 @@
 	<link rel="stylesheet" type="text/css" href="{%static 'css/style.css' %}">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
 
 
 </head>
@@ -84,9 +89,12 @@
                                             </a>
                                            
                                         </div>
-                                    {% endif %}
-                                    
+                                    {% endif %}  
 							</div>
+
+                            <a href="{% url 'chatbot' %}" title="Chat with us">
+                                💬 Chatbot
+                            </a>
 
 						</div><!--top-right-->
 					</div>

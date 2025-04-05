@@ -46,15 +46,19 @@ urlpatterns = [
     path('login', views.signin, name='login'),
     path('logout', views.sign_out, name='logout'),
     
+     # path('basepopular/<str:genre>/book_details/<int:id>/', views.bk_details , name='book_details'),
     # basepopular/Adventure/book_details/21
     path('basepopular/book_details/<int:id>/', views.bk_details , name='book-details'),
-    # path('basepopular/<str:genre>/book_details/<int:id>/', views.bk_details , name='book_details'),
-    
     path('book_details/<int:id>/', views.bk_details , name='book-details'),
     
     path('add_book', views.add_book , name="add-product"),
     path("update_data/<int:id>",views.update_data, name="update-data"),
     path("delete_data/<int:id>",views.delete_data, name="deletedata"),
+    
+    #  path('chatbot/', views.chatbot_view, name='chatbot'),
+     path('chatbot/', views.chatbot_view, name='chatbot'),
+     path('clear-chat/', views.clear_chat, name='clear_chat'),
+
     
 ]
 # http://127.0.0.1:8000/basepopular/Business/book_details/12
