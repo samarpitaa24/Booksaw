@@ -58,3 +58,13 @@ trending_keywords = [
     "top books", "book trends", "current trends", "recently popular", 
     "book of the moment", "most purchased", "hot right now", "trending books"
 ]
+
+
+# --- chatbot/keywords.py ---
+
+
+
+bookstore_keywords = {
+    "bookstore": ["bookstore", "book shop", "nearby book", "find book", "recommend bookstore",
+    "books nearby", "where can i find books", "nearest bookstore", "good bookshop"]
+}
