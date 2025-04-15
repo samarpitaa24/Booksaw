@@ -311,7 +311,7 @@ def recommend_books_by_genre(user_message):
     # Step 3: Format the response with book details
     response = "Here are some books based on your preferences:\n"
     for book in books_to_display:
-        response += f"{book.name} by {book.author} - Price: {book.price} Rs\n"
+        response += f"{book.name} by {book.author}\n"
     
     return response
 
@@ -496,9 +496,9 @@ def get_trending_books():
     trending_books = book_counter.most_common(5)
     
     # Prepare the response with book names and authors
-    response = "Here are the top 5 trending books based on recent orders:\n"
+    response = "Here are the top 5 trending books :\n"
     for book, count in trending_books:
-        response += f"- {book.name} by {book.author} (Ordered {count} times)\n"
+        response += f"- {book.name} by {book.author}\n"
     
     return response
 
@@ -514,48 +514,6 @@ def handle_trending_books_request(user_message):
     # If the message does not contain any trending-related keywords
     return "Sorry, I couldn't understand your request for trending books. Please mention keywords like 'trending', 'popular', etc."
 
-
-#using all functions to get a final response
-# def get_response(user_message):
-#     """
-#     This function processes the user's message and routes it to the corresponding function based on the content.
-#     """
-    
-#     # Lowercase the user message for easier matching
-#     user_message_lower = user_message.lower()
-
-#     # Case 1: Book Recommendation Request (including when only a genre is specified)
-#     if any(keyword in user_message_lower for keyword in recommendation_keywords["recommendation"]):
-#         # Check if the user has mentioned a genre
-#         user_genre = match_genre(user_message)
-#         if user_genre:
-#             # If a genre is found, return recommendations based on genre
-#             return handle_book_recommendation_request(user_message)
-
-#         # Check if the user has mentioned an author
-#         user_author = extract_authors_from_message(user_message)
-#         if user_author:
-#             # If an author is found, return recommendations based on author
-#             return handle_book_recommendation_request(user_message)
-        
-#         # If no genre or author are specified, ask the user to provide one
-#         return "Please specify a genre or an author for book recommendations."
-    
-#     # Case 2: Genre Mention Without Recommendation Keyword (like just 'fiction')
-#     elif match_genre(user_message):
-#         # If only a genre is mentioned, suggest books for that genre
-#         return handle_book_recommendation_request(user_message)
-    
-#     # Case 3: Author/Book Info Request
-#     elif any(keyword in user_message_lower for keyword in info_keywords):
-#         return display_info(user_message)
-    
-#     # Case 4: Trending Books Request
-#     elif any(keyword in user_message_lower for keyword in trending_keywords):
-#         return handle_trending_books_request(user_message)
-    
-#     # Default response if no condition is met
-#     return "I'm sorry, I didn't quite understand your request. Could you please rephrase it?"
 
 
 
@@ -638,98 +596,6 @@ def clear_chat(request):
         request.session['chat_history'] = []
     return redirect('chatbot')  # replace 'chatbot' with your chatbot view name if different
 
-
-
-# --- chatbot/get_response.py ---
-
-# from chatbot.keywords import recommendation_keywords, info_keywords, trending_keywords, bookstore_keywords
-# from data.pune_map_data import pune_map, heuristic
-# from data.address import bookstore_addresses
-# from chatbot.astar_search import a_star_search
-# from chatbot.models import Order
-# from django.contrib.auth.models import User
-
-# import re
-
-# def extract_location_from_message(message):
-#     """Extract location if present in the message."""
-#     locations = pune_map.keys()
-#     for loc in locations:
-#         if loc.lower() in message.lower():
-#             return loc
-#     return None
-
-# def is_bookstore_query(message):
-#     """Check if the message is asking about bookstores."""
-#     message = message.lower()
-#     return any(keyword in message for keyword in bookstore_keywords)
-
-# def get_latest_user_location(user):
-#     """Retrieve latest address from order history if no location is mentioned."""
-#     try:
-#         latest_order = Order.objects.filter(user=user).latest('date')
-#         return extract_location_from_message(latest_order.address)
-#     except Order.DoesNotExist:
-#         return None
-
-# def handle_bookstore_request(user_message, user):
-#     location = extract_location_from_message(user_message)
-
-#     if not location:
-#         location = get_latest_user_location(user)
-#         if not location:
-#             return "Could you please mention your location in Pune to find the nearest bookstore?"
-
-#     # Perform A* search
-#     nearest_loc = a_star_search(location, 'FC Road', pune_map, heuristic)
-
-#     if nearest_loc and nearest_loc in bookstore_addresses:
-#         return f"The nearest bookstore from {location} is at {nearest_loc}: {bookstore_addresses[nearest_loc]}"
-#     else:
-#         return "Sorry, I couldn't find a nearby bookstore. Please try another location."
-
-# def get_response(user_message, request):
-#     """
-#     This function processes the user's message and routes it to the corresponding function based on the content.
-#     """
-#     user_message_lower = user_message.lower()
-
-#     # Bookstore logic
-#     if is_bookstore_query(user_message_lower):
-#         return handle_bookstore_request(user_message, request.user)
-
-#     # Book Recommendation Request
-#     if any(keyword in user_message_lower for keyword in recommendation_keywords["recommendation"]):
-#         from chatbot.recommendation import handle_book_recommendation_request, match_genre, extract_authors_from_message
-
-#         user_genre = match_genre(user_message)
-#         if user_genre:
-#             return handle_book_recommendation_request(user_message)
-
-#         user_author = extract_authors_from_message(user_message)
-#         if user_author:
-#             return handle_book_recommendation_request(user_message)
-
-#         return "Please specify a genre or an author for book recommendations."
-
-#     # Genre-only mention
-#     elif 'match_genre' in globals() and match_genre(user_message):
-#         return handle_book_recommendation_request(user_message)
-
-#     # Book info
-#     elif any(keyword in user_message_lower for keyword in info_keywords):
-#         from chatbot.info import display_info
-#         return display_info(user_message)
-
-#     # Trending books
-#     elif any(keyword in user_message_lower for keyword in trending_keywords):
-#         from chatbot.trending import handle_trending_books_request
-#         return handle_trending_books_request(user_message)
-
-#     return "I'm sorry, I didn't quite understand your request. Could you please rephrase it?"
-
-
-
 #BOOKKKKSTOREEE
 
 from .data.location_aliases import location_aliases
@@ -794,7 +660,7 @@ def handle_bookstore_request(message):
         address = bookstore_addresses[nearest_bookstore]
         return (
             f"The nearest bookstore from {user_location} is in {nearest_bookstore} "
-            f"(approx. {distance} units away):\n{address}"
+            f"\n{address}"
         )
     else:
         return "Sorry, I couldn't find any bookstores near your location."

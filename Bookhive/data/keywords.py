@@ -56,7 +56,7 @@ info_keywords = [
 trending_keywords = [
     "trending", "popular", "hot", "bestselling", "most ordered", 
     "top books", "book trends", "current trends", "recently popular", 
-    "book of the moment", "most purchased", "hot right now", "trending books"
+    "book of the moment", "most purchased", "hot right now", "trending books", "famous books", "famous", "famous book"
 ]
 
 
